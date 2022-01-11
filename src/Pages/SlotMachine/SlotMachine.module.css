@@ -1,0 +1,10 @@
+.page_container {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    width: 80%;
+    height: 500px;
+    background-color: rgba(28, 28, 28, 0.9);
+    border: 1px solid #522e2e;
+    display: flex;
+}

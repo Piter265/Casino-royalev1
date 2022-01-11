@@ -1,0 +1,91 @@
+.page_container{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    width: 440px;
+    height: 480px;
+    background-color: rgba(28, 28, 28, 0.9);
+    border: 1px solid #522e2e;
+}
+
+.header{
+    font-size: 45px;
+    font-weight: 400;
+    color: #545454;
+    letter-spacing: 1px;
+    margin-top: 25px;
+    text-align: center;
+}
+
+.account_balance_container{
+    text-align: center;
+    font-size: 25px;
+    color: #67583e;
+    margin-top: 100px;
+}
+
+.account_balance{
+    font-size: 30px;
+    text-align: center;
+    color: #ffffff;
+}
+
+.button_container{
+    text-align: center;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.button_play, .button_roulette, .button_slot_machine{
+    font-size: 30px;
+    color: cadetblue;
+    letter-spacing: 1px;
+    padding: 2px;
+    border-radius: 5px;
+    text-align: center;
+    margin: 15px;
+}
+
+.button_play{
+    background-color: #21361d;
+    width: 90px;
+    height: 60px;
+    border: 1px solid #002500;
+}
+
+.button_roulette{
+    background-color: #461111;
+    height: 60px;
+    width: 130px;
+    border: 1px solid #2a0a0a;
+}
+
+.button_slot_machine{
+    background-color: #756a27;
+    height: 60px;
+    width: 200px;
+    border: 1px solid #363112;
+}
+
+.button_play:hover, .button_roulette:hover, .button_slot_machine:hover{
+    filter: brightness(1.25);
+}
+
+@keyframes showButtons {
+    0%{
+        display: inline;
+        opacity: 0;
+    }
+    25%{
+        opacity: 0.25;
+    }
+    50%{
+        opacity: 0.5;
+    }
+    75%{
+        opacity: 0.75;
+    }
+    100%{
+        opacity: 1;
+    }
+}
