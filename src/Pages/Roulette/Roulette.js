@@ -64,6 +64,7 @@ class Roulette extends React.Component {
         isOddChecked: false,
         isBlackChecked: false,
         isRedChecked: false,
+        accountBalance:100,
         bet:0,
     }
 
@@ -71,11 +72,17 @@ class Roulette extends React.Component {
         const newPrizeNumber = Math.floor(Math.random() * this.data.length);
         this.setState({
             prizeNumber: newPrizeNumber
+
         })
         this.setState(
             {
-                spin: true
+                spin: true,
             })
+        let newAccountBalance = sessionStorage.getItem("AccountBalance") - this.state.bet;
+
+        if(newAccountBalance>=0){
+            sessionStorage.setItem("AccountBalance", newAccountBalance.toString());
+        }
     };
 
     getSecondColor = (color) => {
@@ -126,6 +133,16 @@ class Roulette extends React.Component {
 
 
     computeWin=()=>{
+        if(this.checkIfWin()){
+            let newAccountBalance = parseInt(sessionStorage.getItem("AccountBalance")) + parseInt(this.state.bet)*2;
+            if(newAccountBalance>=0){
+                sessionStorage.setItem("AccountBalance", newAccountBalance.toString());
+            }
+            return;
+        }
+    }
+
+    checkIfWin=()=>{
         let num = this.data[this.state.prizeNumber];
         if (this.state.isFirst12Checked && num.option >= 1 && num.option <= 12) {
         } else if (this.state.isSecond12Checked && num.option > 12 && num.option <= 24) {
@@ -137,9 +154,9 @@ class Roulette extends React.Component {
         } else if (this.state.isBlackChecked && num.style.backgroundColor === "#000000") {
         } else if (this.state.isRedChecked && num.style.backgroundColor === "#540808") {
         }else {
-            return this.state.bet*-2;
+            return false;
         }
-        return this.state.bet*2;
+        return true;
     }
 
 //
@@ -162,26 +179,27 @@ class Roulette extends React.Component {
                             perpendicularText={[true]}
                             onStopSpinning={() => {
                                 this.setState({spin: false})
-                                //this.computeWin();
-                                this.props.onChangeAccountBalance(this.computeWin());
+                                this.computeWin()
                             }
                             }
                         />
                     </div>
-                    <button className={styles.spin_button} onClick={this.spinClick}>Spin</button>
+                    <button className={styles.spin_button} onClick={this.spinClick} disabled={this.state.spin} >Spin</button>
                 </section>
                 <section className={styles.label_prize_container}>
-                    <header className={styles.win_information}>
-                        You win
+                    <header className={styles.win_information}
+                            style={{color: this.checkIfWin()? "green" : "darkred"}}>
+                        {!this.state.spin &&<span>
+                            {this.checkIfWin() ? "You win" : "You loss"}
+                        </span>}
+
                     </header>
-                    <section className={styles.account_balance_container}>
-                        <span>Your account balance</span>
-                        <br/><br/><br/><span className={styles.account_balance}>{this.props.accountBalance}</span>
-                    </section>
+
                 </section>
                 <div className={styles.board_bet_container}>
                     <BetButton text="1st 12"
                                firstColor="#796822FF"
+                               disabled={this.state.spin}
                                action={
                                    () => {
                                        this.uncheckCheckboxes();
@@ -189,6 +207,7 @@ class Roulette extends React.Component {
                                    }}/>
                     <BetButton text="2nd 12"
                                firstColor="#796822FF"
+                               disabled={this.state.spin}
                                action={() => {
                                    this.uncheckCheckboxes();
                                    this.setState({isSecond12Checked: true})
@@ -196,6 +215,7 @@ class Roulette extends React.Component {
                     />
                     <BetButton text="3rd 12"
                                firstColor="#796822FF"
+                               disabled={this.state.spin}
                                action={()=>{
                                    this.uncheckCheckboxes();
                                    this.setState({isThird12Checked: true})
@@ -203,6 +223,7 @@ class Roulette extends React.Component {
                     />
                     <BetButton text="1 - 18"
                                firstColor="#b36b00"
+                               disabled={this.state.spin}
                                action={()=>{
                                    this.uncheckCheckboxes();
                                    this.setState({isFirst18Checked: true})
@@ -210,6 +231,7 @@ class Roulette extends React.Component {
                     />
                     <BetButton text="EVEN"
                                firstColor="#392673"
+                               disabled={this.state.spin}
                                action={()=>{
                                    this.uncheckCheckboxes();
                                    this.setState({isEvenChecked: true})
@@ -217,6 +239,7 @@ class Roulette extends React.Component {
                     />
                     <BetButton text="Red"
                                firstColor="#540808"
+                               disabled={this.state.spin}
                                action={()=>{
                                    this.uncheckCheckboxes();
                                    this.setState({isRedChecked: true})
@@ -224,6 +247,7 @@ class Roulette extends React.Component {
                     />
                     <BetButton text="Black"
                                firstColor="#000000"
+                               disabled={this.state.spin}
                                action={()=>{
                                    this.uncheckCheckboxes();
                                    this.setState({isBlackChecked: true})
@@ -231,6 +255,7 @@ class Roulette extends React.Component {
                     />
                     <BetButton text="ODD"
                                firstColor="#392673"
+                               disabled={this.state.spin}
                                action={()=>{
                                    this.uncheckCheckboxes();
                                    this.setState({isOddChecked:true})
@@ -238,18 +263,13 @@ class Roulette extends React.Component {
                     />
                     <BetButton text="19 - 36"
                                firstColor="#b36b00"
+                               disabled={this.state.spin}
                                action={()=>{
                                    this.uncheckCheckboxes();
                                    this.setState({isSecond18Checked: true})
                                }}
                     />
 
-                    <p className={styles.bet_header}>BET</p>
-                    <input type="text" className={styles.bet}
-                    onChange={e=>()=>{
-                        this.setState({bet:e})
-                    }}
-                    />
                 </div>
                 <div className={styles.board_container}>
                     {[...this.data].sort((a, b) => a.option - b.option).map(element =>

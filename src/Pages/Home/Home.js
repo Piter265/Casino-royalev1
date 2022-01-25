@@ -25,10 +25,7 @@ const Home = (props) => {
     return (
         <div className={styles.page_container}>
             <header className={styles.header}><span>Casino Royale</span></header>
-            <section className={styles.account_balance_container}>
-                <p>Your account balance</p>
-                <p className={styles.account_balance}>{props.accountBalance}</p>
-            </section>
+
             <section className={styles.button_container}>
                 {!isPlayClicked && <button className={styles.button_play} onClick={clickPlay}>Play</button>}
                 {isPlayClicked && <button className={styles.button_roulette} onClick={clickRoulette}>Roulette</button>}

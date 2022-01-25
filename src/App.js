@@ -1,3 +1,4 @@
+import React from "react";
 import './App.css';
 import MainLayout from "./MainLayout/MainLayout";
 import {Route, Routes} from "react-router-dom";
@@ -9,37 +10,38 @@ import About from "./Pages/About/About";
 import {useState} from "react";
 import Backdrop from "./Modal/Backdrop/Backdrop";
 
-const App = () => {
+class App extends React.Component{
 
-    const [isModalOpen, setModal] = useState(true);
-    const [accountBalance, setAccountBalance] = useState(100);
-
-    function personIsAdult() {
-        setModal(false);
+    state={
+        isModalOpen:true,
     }
 
-    function onChangeAB(prize) {
-        setAccountBalance(accountBalance+prize);
-    }
+     componentDidMount=()=>{
+        sessionStorage.setItem("AccountBalance", "100");
+     }
 
-    return (
-        <MainLayout>
-            {isModalOpen && <Backdrop onConfirm={personIsAdult}/>}
-            <Routes>
-                {!isModalOpen &&
-                <>
-                    <Route exact path="/" element={<Home accountBalance={accountBalance}/>}/>
-                    <Route exact path="/roulette" element={
-                        <Roulette accountBalance={accountBalance} onChangeAccountBalance={onChangeAB}/>}/>
-                    <Route exact path="/slot-machine" element={<SlotMachinePage/>}/>
-                    <Route exact path="/about" element={<About/>}/>
-                    <Route path="*" element={<Error/>}/>
-                </>
-                }
-            </Routes>
-        </MainLayout>
-    );
+     personIsAdult(){
+        this.setState({isModalOpen:false})
+     }
 
+     render() {
+         return (
+             <MainLayout>
+                 {this.state.isModalOpen && <Backdrop onConfirm={this.personIsAdult.bind(this)}/>}
+                 <Routes>
+                     {!this.state.isModalOpen &&
+                     <>
+                         <Route exact path="/" element={<Home/>}/>
+                         <Route exact path="/roulette" element={<Roulette/>}/>
+                         <Route exact path="/slot-machine" element={<SlotMachinePage/>}/>
+                         <Route exact path="/about" element={<About/>}/>
+                         <Route path="*" element={<Error/>}/>
+                     </>
+                     }
+                 </Routes>
+             </MainLayout>
+         );
+     }
 };
 
 export default App;

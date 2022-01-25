@@ -1,0 +1,24 @@
+.page_container{
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 50px;
+    width: 440px;
+    height: 480px;
+    background-color: rgba(28, 28, 28, 0.9);
+    border: 1px solid #522e2e;
+}
+
+.header{
+    font-weight: 700;
+    font-size: 32px;
+    margin-top: 90px;
+    letter-spacing: 1px;
+    color: #756a27;
+    text-align: center;
+}
+
+.description{
+    font-size: 25px;
+    text-align: center;
+    color: #94965c;
+}
